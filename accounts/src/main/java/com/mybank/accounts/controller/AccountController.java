@@ -2,9 +2,12 @@ package com.mybank.accounts.controller;
 
 import com.mybank.accounts.constants.AccountConstants;
 import com.mybank.accounts.dto.CustomerDto;
+import com.mybank.accounts.dto.ErrorResponseDto;
 import com.mybank.accounts.dto.ResponseDto;
 import com.mybank.accounts.service.IAccountService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -66,7 +69,10 @@ public class AccountController {
             ),
             @ApiResponse(
                     responseCode = "500",
-                    description = "Http status Internal Server Error"
+                    description = "Http status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
     }
     )
@@ -95,7 +101,10 @@ public class AccountController {
             ),
             @ApiResponse(
                     responseCode = "500",
-                    description = "Http status Internal Server Error"
+                    description = "Http status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
     }
     )
