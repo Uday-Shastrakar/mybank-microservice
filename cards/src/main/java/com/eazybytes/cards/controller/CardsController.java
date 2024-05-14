@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,14 @@ import org.springframework.web.bind.annotation.*;
 public class CardsController {
 
     private ICardsService iCardsService;
+
+    public CardsController(ICardsService iCardsService){
+        this.iCardsService = iCardsService;
+    }
+
+    @Value("${build.version}")
+    private String buildVersion;
+
 
     @Operation(
             summary = "Create Card REST API",
@@ -159,6 +168,21 @@ public class CardsController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(CardsConstants.STATUS_417, CardsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(
+            summary = "Get build information",
+            description = "Get build information that is deployed into cards microservice"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http status code ok"
+    )
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo(){
+        return  ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildVersion);
     }
 
 }

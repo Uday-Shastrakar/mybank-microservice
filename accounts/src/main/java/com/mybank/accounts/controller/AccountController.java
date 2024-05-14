@@ -14,18 +14,31 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "CRUD REST APIs for account in myBank",
         description = "CRUD REST APIs In myBank to CREATE,UPDATE,FETCH and DELETE account details")
 @RestController
 @RequestMapping("/api")
-@AllArgsConstructor
+
+@Validated
 public class AccountController {
 
-    private IAccountService iAccountService;
+    private final  IAccountService iAccountService;
+
+    public AccountController(IAccountService iAccountService){
+        this.iAccountService = iAccountService;
+    }
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    private Environment environment;
 
     @Operation(
             summary = "create Account  Rest API",
@@ -124,5 +137,35 @@ public class AccountController {
         }
     }
 
+    @Operation(
+            summary = "Get build information",
+            description = "Get build information that is deployed into accounts microservice"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http status code ok"
+    )
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getBuildInfo(){
+        return  ResponseEntity
+                .status(HttpStatus.OK)
+                .body(buildVersion);
+    }
+
+
+    @Operation(
+            summary = "Get build information",
+            description = "Get build information that is deployed into accounts microservice"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Http status code ok"
+    )
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion(){
+        return  ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("JAVA_HOME"));
+    }
 
 }
