@@ -1,0 +1,39 @@
+
+services:
+  accounts:
+    image: "uday2626/accounts:v1"
+    container_name: accounts-ms
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - mybank
+  loans:
+    image: "uday2626/loans:v1"
+    container_name: loans-ms
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - mybank
+  cards:
+    image: "uday2626/cards:v1"
+    container_name: cards-ms
+    ports:
+      - "9000:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - mybank
+
+networks:
+  mybank:
+    driver: "bridge"
