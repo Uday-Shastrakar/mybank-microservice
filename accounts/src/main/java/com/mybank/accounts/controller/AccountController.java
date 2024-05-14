@@ -1,6 +1,7 @@
 package com.mybank.accounts.controller;
 
 import com.mybank.accounts.constants.AccountConstants;
+import com.mybank.accounts.dto.AccountContactInfoDto;
 import com.mybank.accounts.dto.CustomerDto;
 import com.mybank.accounts.dto.ErrorResponseDto;
 import com.mybank.accounts.dto.ResponseDto;
@@ -39,6 +40,8 @@ public class AccountController {
     private String buildVersion;
 
     private Environment environment;
+
+    private AccountContactInfoDto accountContactInfoDto;
 
     @Operation(
             summary = "create Account  Rest API",
@@ -154,18 +157,18 @@ public class AccountController {
 
 
     @Operation(
-            summary = "Get build information",
-            description = "Get build information that is deployed into accounts microservice"
+            summary = "Get contact info",
+            description = "Get contact info in accounts microservice"
     )
     @ApiResponse(
             responseCode = "200",
             description = "Http status code ok"
     )
-    @GetMapping("/java-version")
-    public ResponseEntity<String> getJavaVersion(){
+    @GetMapping("/contact-info")
+    public ResponseEntity<AccountContactInfoDto> getContactInfo(){
         return  ResponseEntity
                 .status(HttpStatus.OK)
-                .body(environment.getProperty("JAVA_HOME"));
+                .body(accountContactInfoDto);
     }
 
 }
